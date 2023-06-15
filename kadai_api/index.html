@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MapAPI</title>
+    <meta charset="utf-8">
+    <style>
+    body{padding:0;
+        margin:0;
+        background:#333;
+    }
+    h1{padding:0;
+        margin:0;
+        font-size:24px;
+        color:white;
+    }
+    </style>
+</head>
+<body>
+<h1>My Fukuoka Trip</h1>
+
+
+<div id="myMap" style='position:relative;width:100%;height:950px;'></div>
+
+
+<!-- [ Pushpin Object ] https://msdn.microsoft.com/en-us/library/mt712673.aspx -->
+<script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[APIkey]' async defer></script>
+<script>
+    
+    function GetMap() {
+        let map = new Microsoft.Maps.Map('#myMap', {
+            center: new Microsoft.Maps.Location(33.58666430000013, 130.39446900000007), //Location center position
+            mapTypeId: Microsoft.Maps.MapTypeId.canvasDark, //Type: [load, aerial,canvasDark,canvasLight,birdseye,grayscale,streetside]
+            zoom: 15  //Zoom:1=zoomOut, 20=zoomUp[ 1~20 ]
+        });
+
+        //Get MAP Infomation
+        let center = map.getCenter();
+        console.log(center);
+
+        //Infobox
+    let infobox = new Microsoft.Maps.Infobox(center, {
+        title: 'セカイを変えるギークになる',
+        description: 'This is the center of the GEEK.',
+        showPointer: true,     //Pointer
+        showCloseButton: true, //CloseButton
+        //Event:Create
+        actions: [{
+            label: 'GEEK',
+            eventHandler: function () { //function
+                window.location.href = "https://fujiwaram.com/";
+            }
+        }, {
+            label: 'POWER',
+            eventHandler: function () { //function
+                window.location.href = "https://www.goldsgym.jp/shop/40100";
+            }
+        }]
+    });
+    //Assign the infobox to a map instance.
+    infobox.setMap(map); //Add infobox to Map
+
+        //Create custom Pushpin
+        let fukuoka = {latitude:33.58666430000013, longitude:130.39446900000007}
+        let pin = new Microsoft.Maps.Pushpin(fukuoka, {
+            color: 'red',            //Color
+            draggable:true,          //MouseDraggable
+            enableClickedStyle:true, //Click
+            enableHoverStyle:true,   //MouseOver
+            visible:true ,           //show/hide
+            title: 'ジーズ福岡',       //PushPin:title
+            subTitle: "G's福岡",  //PushPin:subtitle
+            text: 'G'                 //PushPin:text
+        });
+
+        //33.591312318637684, 130.4112333705507:福岡HafH拠点
+        let hafh = {latitude:33.591312318637684, longitude:130.4112333705507}
+        let pins = new Microsoft.Maps.Pushpin(hafh, {
+            color: 'blue',            //Color
+            draggable:true,          //MouseDraggable
+            enableClickedStyle:true, //Click
+            enableHoverStyle:true,   //MouseOver
+            visible:true,             //show/hide
+            title: 'THE LIFE',       //PushPin:title
+            subTitle: "HafH Fukuoka THE LIFE",  //PushPin:subtitle
+            text: 'H'                 //PushPin:text
+        });
+
+        //33.59501889341335, 130.40577325188832ゴールドジム博多
+        let gold = {latitude:33.59501889341335, longitude:130.40577325188832}
+        let golds = new Microsoft.Maps.Pushpin(gold, {
+            color: 'purple',            //Color
+            draggable:true,          //MouseDraggable
+            enableClickedStyle:true, //Click
+            enableHoverStyle:true,   //MouseOver
+            visible:true,             //show/hide
+            title: 'GOLDGYM',       //PushPin:title
+            subTitle: "Change Your Body",  //PushPin:subtitle
+            text: 'G'                 //PushPin:text
+        });
+
+           //Point!!: Add mouse events to the pushpin.
+           Microsoft.Maps.Events.addHandler(pin,'click',function(){
+            window.location.href = "https://gsacademy.jp/base";
+        });
+        
+        Microsoft.Maps.Events.addHandler(pins,'click',function(){
+            window.location.href = "https://www.hafh.com/properties/49";
+        });
+        
+        Microsoft.Maps.Events.addHandler(golds,'click',function(){
+            window.location.href = "https://www.instagram.com/explore/tags/%E3%82%B4%E3%83%BC%E3%83%AB%E3%83%89%E3%82%B8%E3%83%A0%E8%8A%B8%E4%BA%BA/";
+        });
+
+        //Add the pushpin to the map
+        map.entities.push(pin);
+        map.entities.push(pins);
+        map.entities.push(golds);
+    }
+
+</script>
+</body>
+</html>
